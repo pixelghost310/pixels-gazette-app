@@ -1,242 +1,524 @@
 @use "./base.scss";
 
-// -------------------------------------------------------------------------
-// 1. SETUP & VARIABLES
-// -------------------------------------------------------------------------
+// ============================================================================
+// Vintage Newspaper Theme for Quartz
+// A classic newspaper aesthetic with aged paper texture and print optimization
+// ============================================================================
 
-$paper-color: #f4f1ea; // Vintage newsprint yellow
-$ink-color: #1a1a1a;   // Deep black/grey
-$faded-ink: #555555;   // For non-original posts
-$desk-color: #2e2e2e;  // Dark background behind the paper
-$font-stack: "Geist Mono", "Courier New", Courier, monospace;
+@use "sass:color";
 
-:root {
-  --light: #{$paper-color};
-  --lightgray: #e0ded5;
-  --gray: #9e9e9e;
-  --darkgray: #555;
-  --dark: #{$ink-color};
-  --secondary: #{$ink-color};
-  --tertiary: #{$faded-ink};
-  --highlight: rgba(0, 0, 0, 0.05);
-  
-  --bodyFont: #{$font-stack};
-  --headerFont: #{$font-stack};
-  --codeFont: #{$font-stack};
-}
+// ----------------------------------------------------------------------------
+// Color Palette
+// ----------------------------------------------------------------------------
+$aged-paper: #f4f1e8;           // Main background - aged newsprint
+$aged-paper-dark: #e8e4d8;      // Slightly darker for contrast
+$ink-black: #1a1a1a;            // Primary text - newspaper ink
+$ink-faded: #4a4a4a;            // Secondary text - slightly faded
+$accent-sepia: #8b7355;         // Accent color - sepia tone
+$border-gray: #d4cfc0;          // Subtle borders
 
-// -------------------------------------------------------------------------
-// 2. GLOBAL LAYOUT (The "Desk" & The "Paper")
-// -------------------------------------------------------------------------
+// Print-specific colors
+$print-bg: #fafaf8;             // Very light cream for print
+$print-text: #000000;           // Pure black for print clarity
 
-// * {
-// font-family: "CMU";
-// }
+// ----------------------------------------------------------------------------
+// Typography Variables
+// ----------------------------------------------------------------------------
+$font-serif: 'Geist Mono', 'Courier New', monospace;
+$font-headline: 'Geist Mono', 'Courier New', monospace;
+$line-height-newspaper: 1.6;
 
+// ----------------------------------------------------------------------------
+// Main Styling - Screen Display
+// ----------------------------------------------------------------------------
 
+// Base background with aged paper color
 body {
-  background-color: $desk-color;
-  background-image: radial-gradient(#333 1px, transparent 1px);
-  background-size: 20px 20px;
-  color: $ink-color;
-  font-family: var(--bodyFont);
-  margin: 0 4%;
-}
-
-// The Main Page Container serves as the "Newspaper Sheet"
-.page {
-//   max-width: 900px;
-  margin: 40px auto;
-  background-color: $paper-color;
-  padding: 40px 60px;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background-color: $aged-paper;
+  color: $ink-black;
+  font-family: $font-serif;
+  line-height: $line-height-newspaper;
   
-  // High readability adjustments
-  font-size: 1.1rem;
-  line-height: 1.6;
-
-  // TORN EDGE EFFECT (Top)
-  &::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(45deg, transparent 33.333%, $paper-color 33.333%, $paper-color 66.667%, transparent 66.667%), 
-                linear-gradient(-45deg, transparent 33.333%, $paper-color 33.333%, $paper-color 66.667%, transparent 66.667%);
-    background-size: 20px 20px;
-  }
-
-  // TORN EDGE EFFECT (Bottom)
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(45deg, transparent 33.333%, $paper-color 33.333%, $paper-color 66.667%, transparent 66.667%), 
-                linear-gradient(-45deg, transparent 33.333%, $paper-color 33.333%, $paper-color 66.667%, transparent 66.667%);
-    background-size: 20px 20px;
-    transform: rotate(180deg);
-  }
+  // Subtle paper texture using CSS noise
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.01) 2px,
+      rgba(0, 0, 0, 0.01) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.01) 2px,
+      rgba(0, 0, 0, 0.01) 4px
+    );
+  background-blend-mode: multiply;
 }
 
-// -------------------------------------------------------------------------
-// 3. TYPOGRAPHY & ELEMENTS
-// -------------------------------------------------------------------------
+// Content wrapper styling
+.center,
+#quartz-body {
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  
+  // Add subtle paper edge effect
+  border-left: 1px solid $border-gray;
+  border-right: 1px solid $border-gray;
+}
 
+// Main content area padding
+.page,
+article,
+main,
+.content {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+// ----------------------------------------------------------------------------
+// Typography - Newspaper Style
+// ----------------------------------------------------------------------------
+
+// Headlines with newspaper character
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--headerFont);
-  text-transform: uppercase;
+  font-family: $font-headline;
+  font-weight: 700;
+  color: $ink-black;
   letter-spacing: -0.02em;
-  margin-top: 2em;
-  border-bottom: 2px solid $ink-color;
-  padding-bottom: 5px;
-  width: fit-content;
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  
+  // Underline accent for major headings
+  &::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: $accent-sepia;
+    margin-top: 0.5em;
+  }
 }
 
 h1 {
-  font-size: 2.5rem;
-  border-bottom: 4px double $ink-color; // Double line for main headlines
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  color: $ink-color;
-  font-weight: bold;
-  
-  &:hover {
-    background-color: $ink-color;
-    color: $paper-color;
-    text-decoration: none;
-  }
-}
-
-// Replace HR with dashes
-hr {
-  border: none;
-  height: auto;
-  text-align: center;
-  margin: 3rem 0;
-  overflow: visible;
+  font-size: 2.5em;
+  border-bottom: 3px double $border-gray;
+  padding-bottom: 0.3em;
   
   &::after {
-    content: "----------------------------------------";
-    letter-spacing: 5px;
-    color: $ink-color;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
+    display: none; // Remove for h1, border serves this purpose
   }
 }
 
-// Search Bar - Torn Paper Style
-.search-button {
-  background: transparent;
-  border: 1px dashed $ink-color;
-  font-family: var(--bodyFont);
-  color: $ink-color;
-  padding: 5px 10px;
+h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid $border-gray;
+  padding-bottom: 0.25em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+// Body text optimization
+p {
+  margin-bottom: 1em;
+  text-align: justify;
+  hyphens: auto;
+}
+
+// Links with vintage style
+a {
+  color: $accent-sepia;
+  text-decoration: underline;
+  text-decoration-color: rgba(139, 115, 85, 0.4);
+  transition: all 0.2s ease;
   
-  p {
-    color: $ink-color;
+  &:hover {
+    color: color.adjust($accent-sepia, $lightness: -15%);
+    text-decoration-color: rgba(139, 115, 85, 0.8);
   }
 }
 
-// -------------------------------------------------------------------------
-// 4. CONTENT DIFFERENTIATION (#original vs others)
-// -------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// Content Elements
+// ----------------------------------------------------------------------------
 
-// Style for #original posts
-.original-post {
-  color: $ink-color;
+// Blockquotes styled as newspaper pull-quotes
+blockquote {
+  border-left: 4px solid $accent-sepia;
+  margin: 1.5em 0;
+  padding: 1em 1.5em;
+  background-color: rgba(139, 115, 85, 0.05);
+  font-style: italic;
+  font-size: 1.1em;
+  color: $ink-faded;
   
-  p {
-    font-weight: 500; // Slightly bolder
-  }
-  
-  // Drop cap for original articles
-  & > p:first-of-type::first-letter {
-    float: left;
-    font-size: 3.5rem;
-    line-height: 0.8;
-    padding-right: 10px;
-    padding-top: 5px;
-    font-weight: 700;
-  }
-}
-
-// Style for other (curated/notes) posts
-.nonoriginal-post {
-  color: $faded-ink;
-  
-  h1, h2, h3 {
-    opacity: 0.8;
-    border-color: $faded-ink;
-  }
-
-  // Add a texture overlay to make it look faded/aged
-  position: relative;
   &::before {
-    content: "ARCHIVED";
-    position: absolute;
-    top: 0;
-    right: 0;
-    border: 1px solid $faded-ink;
-    padding: 2px 5px;
-    font-size: 0.8rem;
-    opacity: 0.5;
+    content: '"';
+    font-size: 3em;
+    color: $accent-sepia;
+    opacity: 0.3;
+    line-height: 0;
+    margin-right: 0.1em;
   }
 }
 
-// -------------------------------------------------------------------------
-// 5. AUTHOR & CREDIT BOXES (Column Style)
-// -------------------------------------------------------------------------
+// Code blocks with newspaper monospace feel
+code {
+  background-color: $aged-paper-dark;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  border: 1px solid $border-gray;
+}
 
-.newspaper-meta {
-  margin: 2rem 0;
-  padding: 1.5rem;
-  border-top: 1px solid $ink-color;
-  border-bottom: 1px solid $ink-color;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  background-color: rgba(0,0,0,0.02);
-
-  .meta-image {
-    width: 80px;
-    height: 80px;
-    filter: grayscale(100%) contrast(120%); // Newspaper photo look
-    border: 1px solid $ink-color;
-    object-fit: cover;
+pre {
+  background-color: $aged-paper-dark;
+  padding: 1em;
+  border-radius: 4px;
+  border: 1px solid $border-gray;
+  overflow-x: auto;
+  
+  code {
+    background: none;
+    border: none;
+    padding: 0;
   }
+}
 
-  .meta-text {
-    display: flex;
-    flex-direction: column;
+// Tables with classic newspaper table styling
+table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  
+  thead {
+    background-color: $aged-paper-dark;
+    border-bottom: 2px solid $ink-black;
+  }
+  
+  th, td {
+    padding: 0.75em;
+    text-align: left;
+    border-bottom: 1px solid $border-gray;
+    white-space: normal;
+  }
+  
+  th {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
+  }
+  
+  tr:hover {
+    background-color: rgba(139, 115, 85, 0.05);
+  }
+}
+
+// Table wrapper for horizontal scroll
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.5em 0;
+  
+  table {
+    margin: 0;
+  }
+}
+
+// Horizontal rules as section dividers
+hr {
+  border: none;
+  border-top: 2px solid $border-gray;
+  margin: 2em 0;
+  position: relative;
+  
+  // Decorative center ornament
+  &::after {
+    content: '❦';
+    position: absolute;
+    left: 50%;
+    top: -0.6em;
+    transform: translateX(-50%);
+    background-color: $aged-paper;
+    padding: 0 0.5em;
+    color: $accent-sepia;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Navigation and UI Elements
+// ----------------------------------------------------------------------------
+
+// Navigation with newspaper masthead feel
+nav, .nav, header nav {
+  background-color: $aged-paper-dark;
+  border-top: 3px solid $ink-black;
+  border-bottom: 3px solid $ink-black;
+  padding: 1em 0;
+}
+
+// Buttons with vintage style
+button, .button {
+  background-color: $accent-sepia;
+  color: $aged-paper;
+  border: 2px solid color.adjust($accent-sepia, $lightness: -10%);
+  padding: 0.5em 1em;
+  font-family: $font-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: color.adjust($accent-sepia, $lightness: -10%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Print Styles - Newspaper Print Layout
+// ----------------------------------------------------------------------------
+
+@media print {
+  // Reset to clean print layout
+  * {
+    background: transparent !important;
+    color: $print-text !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  body {
+    background: $print-bg !important;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: $print-text;
+    margin: 0;
+    padding: 0;
+    background-image: none !important;
+  }
+  
+  // Page setup
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+  
+  // Hide UI elements
+  nav,
+  .nav,
+  button,
+  .button,
+  .sidebar,
+  .menu,
+  .no-print,
+  header nav,
+  footer nav,
+  .backlinks,
+  .graph,
+  .toc {
+    display: none !important;
+  }
+  
+  // Typography for print
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: bold;
+    color: $print-text;
     
-    .meta-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-bottom: 1px solid $ink-color;
-      display: inline-block;
-      width: fit-content;
-      margin-bottom: 5px;
+    &::after {
+      display: none; // Remove decorative elements
     }
+  }
+  
+  h1 {
+    font-size: 24pt;
+    border-bottom: 3pt double $print-text;
+    margin-bottom: 12pt;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 18pt;
+    border-bottom: 1pt solid $print-text;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+  }
+  
+  h3 {
+    font-size: 14pt;
+    margin-top: 12pt;
+  }
+  
+  // Paragraph optimization for print
+  p {
+    orphans: 3;
+    widows: 3;
+    text-align: justify;
+    margin-bottom: 8pt;
+  }
+  
+  // Multi-column layout for newspaper effect
+  .content,
+  article,
+  main {
+    column-count: 2;
+    column-gap: 1.5cm;
+    column-rule: 1px solid #ccc;
+  }
+  
+  // Prevent column breaks in certain elements
+  h1, h2, h3, h4, h5, h6,
+  blockquote,
+  pre,
+  table,
+  img,
+  figure {
+    page-break-inside: avoid;
+    column-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  // Links for print
+  a {
+    color: $print-text;
+    text-decoration: underline;
+  }
+  
+  // Show URLs for important links
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    font-style: italic;
+  }
+  
+  // Blockquotes for print
+  blockquote {
+    border-left: 3pt solid $print-text;
+    padding-left: 12pt;
+    font-style: italic;
+    margin: 12pt 0;
+    
+    &::before {
+      display: none;
+    }
+  }
+  
+  // Tables for print
+  table {
+    border-collapse: collapse;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 12pt 0;
+    page-break-inside: avoid;
+    display: table !important;
+    font-size: 8pt;
+    
+    // Scale down table content to fit
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+  
+  thead {
+    display: table-header-group;
+    background: #f0f0f0 !important;
+  }
+  
+  th, td {
+    border: 1pt solid $print-text;
+    padding: 4pt;
+    font-size: 8pt;
+    white-space: normal !important;
+    word-wrap: break-word;
+  }
+  
+  th {
+    font-weight: bold;
+  }
+  
+  // Images optimization
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  
+  // Code blocks for print
+  pre, code {
+    border: 1pt solid $print-text;
+    background: #f9f9f9 !important;
+    font-size: 9pt;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  // Horizontal rules
+  hr {
+    border-top: 1pt solid $print-text;
+    
+    &::after {
+      display: none;
+    }
+  }
+  
+  // Page breaks
+  .page-break {
+    page-break-after: always;
+  }
+}
 
-    .meta-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
+// ----------------------------------------------------------------------------
+// Accessibility Enhancements
+// ----------------------------------------------------------------------------
+
+// Focus indicators for keyboard navigation
+a:focus,
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 3px solid $accent-sepia;
+  outline-offset: 2px;
+}
+
+// Ensure sufficient contrast for small text
+small,
+.small-text {
+  color: $ink-faded;
+  font-size: 0.9em;
+}
+
+// ----------------------------------------------------------------------------
+// Responsive Adjustments
+// ----------------------------------------------------------------------------
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  
+  h1 {
+    font-size: 2em;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  // Disable text justification on mobile for better readability
+  p {
+    text-align: left;
+    hyphens: none;
   }
 }
